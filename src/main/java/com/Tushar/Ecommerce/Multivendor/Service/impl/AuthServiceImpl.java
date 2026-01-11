@@ -1,9 +1,11 @@
 package com.Tushar.Ecommerce.Multivendor.Service.impl;
 
 import com.Tushar.Ecommerce.Multivendor.Modal.Cart;
+import com.Tushar.Ecommerce.Multivendor.Modal.Seller;
 import com.Tushar.Ecommerce.Multivendor.Modal.User;
 import com.Tushar.Ecommerce.Multivendor.Modal.VerificationCode;
 import com.Tushar.Ecommerce.Multivendor.Repository.CartRepository;
+import com.Tushar.Ecommerce.Multivendor.Repository.SellerRepository;
 import com.Tushar.Ecommerce.Multivendor.Repository.UserRespository;
 import com.Tushar.Ecommerce.Multivendor.Repository.VerificationCodeRepository;
 import com.Tushar.Ecommerce.Multivendor.Request.LoginRequest;
@@ -47,6 +49,10 @@ public class AuthServiceImpl implements AuthService {
 
     private final CustomUserServiceImpl customUserService;
 
+    private final SellerRepository sellerRepository;
+
+    private static final String SELLER_PREFIX = "seller_";
+
     @Override
     public String createUser(SignupRequest req) throws Exception {
 
@@ -81,16 +87,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void sentLoginOtp(String email) throws Exception {
+    public void sentLoginOtp(String email ,USER_ROLE role) throws Exception {
         String SIGINING_PREFIX = "signin_";
 
         if(email.startsWith(SIGINING_PREFIX)){
             email = email.substring(SIGINING_PREFIX.length());
-
-            User user = userRepository.findByEmail(email);
-            if(user == null){
-                throw new Exception("User not found with email - "+email);
+            if(role.equals(USER_ROLE.ROLE_SELLER)){
+                Seller seller = sellerRepository.findByEmail(email);
+                if(seller==null){
+                    throw new Exception("user not found with email - "+email);
+                }
+            }else{
+                User user = userRepository.findByEmail(email);
+                if(user == null){
+                    throw new Exception("User not found with email - "+email);
+                }
             }
+
 
         }
 

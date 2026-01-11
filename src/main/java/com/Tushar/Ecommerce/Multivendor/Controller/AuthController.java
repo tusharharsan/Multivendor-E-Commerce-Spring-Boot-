@@ -3,6 +3,7 @@ package com.Tushar.Ecommerce.Multivendor.Controller;
 import com.Tushar.Ecommerce.Multivendor.Modal.User;
 import com.Tushar.Ecommerce.Multivendor.Modal.VerificationCode;
 import com.Tushar.Ecommerce.Multivendor.Repository.UserRespository;
+import com.Tushar.Ecommerce.Multivendor.Request.LoginOtpRequest;
 import com.Tushar.Ecommerce.Multivendor.Request.LoginRequest;
 import com.Tushar.Ecommerce.Multivendor.Response.ApiResponse;
 import com.Tushar.Ecommerce.Multivendor.Response.AuthResponse;
@@ -37,8 +38,8 @@ public class AuthController {
     }
 
     @PostMapping("/sent/login-signup-otp")
-    public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody VerificationCode req) throws Exception {
-        authService.sentLoginOtp(req.getEmail());
+    private ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody LoginOtpRequest req) throws Exception {
+        authService.sentLoginOtp(req.getEmail() ,req.getRole() );
 
         ApiResponse res = new ApiResponse();
         res.setMessage("OTP sent Successfully to " + req.getEmail());

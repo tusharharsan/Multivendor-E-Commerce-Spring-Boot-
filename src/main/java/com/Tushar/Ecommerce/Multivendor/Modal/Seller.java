@@ -31,7 +31,7 @@ public class Seller {
     private BankDetails bankDetails = new BankDetails();
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Address address;
+    private Address Pickupaddress;
 
     private String GSTIN;
 
